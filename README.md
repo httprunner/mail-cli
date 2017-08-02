@@ -1,4 +1,4 @@
-# mail helper
+# Jenkins mail helper
 
 Encapsulation for email senders, include mailgun service and SMTP mailer.
 
@@ -7,7 +7,7 @@ Encapsulation for email senders, include mailgun service and SMTP mailer.
 To install mail helper, run this command in your terminal:
 
 ```bash
-$ pip install -U git+https://github.com/debugtalk/mail-hepler.git#egg=mail-helper
+$ pip install -U git+https://github.com/debugtalk/jenkins-mail-py.git#egg=jenkins-mail-py
 ```
 
 ## Usage
@@ -15,7 +15,8 @@ $ pip install -U git+https://github.com/debugtalk/mail-hepler.git#egg=mail-helpe
 In your `CLI` entrance script, you can use mail helper like below.
 
 ```python
-from mail_helper import MailgunHelper
+import argparse
+from jenkins_mail_py import MailgunHelper
 
 def main():
     """ parse command line options and run commands.
@@ -26,11 +27,11 @@ def main():
     parser.add_argument(
         '--log-level', default='INFO',
         help="Specify logging level, default is INFO.")
-    parser.add_argument(
-        '--host', help="Specify test host.")
 
     mailer = MailgunHelper(parser)
     args = parser.parse_args()
+
+    start(args, mailer)
 
 def start(args, mailer=None):
 
@@ -38,21 +39,28 @@ def start(args, mailer=None):
 
     # send result via email
     if mailer and mailer.config_ready:
-        subject = "this is title"
-        html_content = "<html><p>this is html content</p></html>"
-        mailer.send_mail(subject, html=html_content)
+        subject = "FAIL"
+        content = {"total": 10, "success": 8, "fail": 2}
+        mailer.send_mail(subject, content=content)
+
+if __name__ == '__main__':
+    main()
 ```
 
 And then, you can use mail helper in command shell.
 
 ```text
-$ python main.py -h
-
-usage: main.py [-h] [--log-level LOG_LEVEL] [--host HOST]
-               [--mailgun-api-id MAILGUN_API_ID]
-               [--mailgun-api-key MAILGUN_API_KEY]
-               [--email-sender EMAIL_SENDER]
-               [--email-recepients EMAIL_RECEPIENTS]
+$ python demo_mailgun.py -h
+usage: demo_mailgun.py [-h] [--log-level LOG_LEVEL]
+                       [--mailgun-api-id MAILGUN_API_ID]
+                       [--mailgun-api-key MAILGUN_API_KEY]
+                       [--email-sender EMAIL_SENDER]
+                       [--email-recepients EMAIL_RECEPIENTS]
+                       [--mail-subject MAIL_SUBJECT]
+                       [--mail-content MAIL_CONTENT]
+                       [--jenkins-job-name JENKINS_JOB_NAME]
+                       [--jenkins-job-url JENKINS_JOB_URL]
+                       [--jenkins-build-number JENKINS_BUILD_NUMBER]
 
 CLI application example.
 
@@ -60,8 +68,6 @@ optional arguments:
   -h, --help            show this help message and exit
   --log-level LOG_LEVEL
                         Specify logging level, default is INFO.
-  --host HOST
-                        Specify test host.
   --mailgun-api-id MAILGUN_API_ID
                         Specify mailgun api id.
   --mailgun-api-key MAILGUN_API_KEY
@@ -70,10 +76,20 @@ optional arguments:
                         Specify email sender.
   --email-recepients EMAIL_RECEPIENTS
                         Specify email recepients.
+  --mail-subject MAIL_SUBJECT
+                        Specify email subject.
+  --mail-content MAIL_CONTENT
+                        Specify email content.
+  --jenkins-job-name JENKINS_JOB_NAME
+                        Specify jenkins job name.
+  --jenkins-job-url JENKINS_JOB_URL
+                        Specify jenkins job url.
+  --jenkins-build-number JENKINS_BUILD_NUMBER
+                        Specify jenkins build number.
 ```
 
 ## Example
 
 ```bash
-$ python main.py --seeds http://debugtalk.com --crawl-mode bfs --max-depth 1 --mailgun-api-id samples.mailgun.org --mailgun-api-key key-3ax6xnjp29jd6fds4gc373sgvjxteol0 --email-sender excited@samples.mailgun.org --email-recepients test@email.com
+$ python main.py --seeds http://debugtalk.com --crawl-mode bfs --max-depth 1 --mailgun-api-id samples.mailgun.org --mailgun-api-key key-3ax6xnjp29jd6fds4gc373sgvjxteol0 --email-sender excited@samples.mailgun.org --email-recepients test@email.com --jenkins-job-name demo-smoketest --jenkins-job-url http://test.debugtalk.com/job/demo-smoketest/ --jenkins-build-number 69
 ```

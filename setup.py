@@ -3,22 +3,22 @@ import re
 
 from setuptools import setup
 
-with open(os.path.join(os.path.dirname(__file__), 'mail_helper', '__init__.py')) as f:
+with open(os.path.join(os.path.dirname(__file__), 'jenkins_mail_py', '__init__.py')) as f:
     version = re.compile(r"__version__\s+=\s+'(.*)'", re.I).match(f.read()).group(1)
 
 with open('README.md') as f:
     long_description = f.read()
 
 setup(
-    name='mail-helper',
+    name='jenkins-mail-py',
     version=version,
     description="Encapsulation for email senders, include mailgun service and SMTP mailer.",
     long_description=__doc__,
     author="Leo Lee",
     author_email='mail@debugtalk.com',
-    url='https://github.com/debugtalk/mail-hepler.git',
+    url='https://github.com/debugtalk/jenkins-mail-py.git',
     packages=[
-        'mail_helper',
+        'jenkins_mail_py',
     ],
     include_package_data=True,
     license="MIT license",
