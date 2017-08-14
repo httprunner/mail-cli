@@ -40,8 +40,12 @@ def start(args, mailer=None):
     # send result via email
     if mailer and mailer.config_ready:
         subject = "FAIL"
-        content = {"total": 10, "success": 8, "fail": 2}
-        mailer.send_mail(subject, content=content)
+        content = {
+            'testset1.yml': {'total': 16, 'successes': 16, 'failures': 0, 'errors': 0, 'skipped': 0},
+            'testset2.yml': {'total': 18, 'successes': 16, 'failures': 2, 'errors': 0, 'skipped': 0},
+        }
+        flag_code = 1
+        mailer.send_mail(subject, content, flag_code)
 
 if __name__ == '__main__':
     main()
