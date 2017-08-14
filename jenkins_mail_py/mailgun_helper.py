@@ -56,19 +56,23 @@ class MailgunHelper(object):
             self.config_ready = True
             self.mailgun_api_url = "https://api.mailgun.net/v3/{}/messages".format(mailgun_api_id)
 
-    def send_mail(self, subject="", content=""):
+    def send_mail(self, result_flag="", content=""):
         if not self.config_ready:
             print("configuration error, emails can not be sent.")
             sys.exit(1)
 
-        subject = "-".join([self.jenkins_job_name, subject])
+        subject = "-".join([self.jenkins_job_name, result_flag])
+        content_bgcolor = "green" if result_flag.upper() == "SUCCESS" else "red"
         content_html = """
             <HTML>
-                <p>Jenkins job: {jenkins_job_name}</p>
-                <p>{content}</p>
-                <p>View <a href='{jenkins_job_url}/{jenkins_build_number}'>Jenkins job</a>.</p>
+                <body bgcolor="{content_bgcolor}">
+                    <h2>Jenkins job: {jenkins_job_name}</h2>
+                    <p>{content}</p>
+                    <p>View <a href='{jenkins_job_url}/{jenkins_build_number}'>Jenkins job</a>.</p>
+                </body>
             </HTML>""".format(
                 jenkins_job_name=self.jenkins_job_name,
+                content_bgcolor=content_bgcolor,
                 content=content,
                 jenkins_job_url=self.jenkins_job_url,
                 jenkins_build_number=self.jenkins_build_number

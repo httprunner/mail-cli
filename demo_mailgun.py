@@ -22,9 +22,9 @@ def start(args, mailer=None):
 
     # send result via email
     if mailer and mailer.config_ready:
-        subject = "FAIL"
+        result_flag = "FAIL"
         content = {"total": 10, "success": 8, "fail": 2}
-        mailer.send_mail(subject, content=content)
+        mailer.send_mail(result_flag, content=content)
 
 
 if __name__ == '__main__':
