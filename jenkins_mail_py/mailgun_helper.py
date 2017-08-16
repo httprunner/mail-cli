@@ -2,6 +2,7 @@ import argparse
 import sys
 import requests
 
+from . import __version__
 
 class MailgunHelper(object):
 
@@ -36,6 +37,10 @@ class MailgunHelper(object):
             '--jenkins-build-number', help="Specify jenkins build number.")
 
         args = parser.parse_args()
+        if args.version:
+            print("jenkins-mail-py version: {}".format(__version__))
+            return
+
         mailgun_api_id = args.mailgun_api_id
         self.mailgun_api_key = args.mailgun_api_key
         self.email_sender = args.email_sender
