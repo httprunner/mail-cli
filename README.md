@@ -58,8 +58,8 @@ $ python demo_mailgun.py -h
 usage: demo_mailgun.py [-h] [--log-level LOG_LEVEL]
                        [--mailgun-api-id MAILGUN_API_ID]
                        [--mailgun-api-key MAILGUN_API_KEY]
-                       [--email-sender EMAIL_SENDER]
-                       [--email-recepients [EMAIL_RECEPIENTS [EMAIL_RECEPIENTS ...]]]
+                       [--mail-sender MAIL_SENDER]
+                       [--mail-recepients [MAIL_RECEPIENTS [MAIL_RECEPIENTS ...]]]
                        [--mail-subject MAIL_SUBJECT]
                        [--mail-content MAIL_CONTENT]
                        [--jenkins-job-name JENKINS_JOB_NAME]
@@ -76,9 +76,9 @@ optional arguments:
                         Specify mailgun api id.
   --mailgun-api-key MAILGUN_API_KEY
                         Specify mailgun api key.
-  --email-sender EMAIL_SENDER
+  --mail-sender MAIL_SENDER
                         Specify email sender.
-  --email-recepients [EMAIL_RECEPIENTS [EMAIL_RECEPIENTS ...]]
+  --mail-recepients [MAIL_RECEPIENTS [MAIL_RECEPIENTS ...]]
                         Specify email recepients.
   --mail-subject MAIL_SUBJECT
                         Specify email subject.
@@ -95,5 +95,5 @@ optional arguments:
 ## Example
 
 ```bash
-$ python main.py --seeds http://debugtalk.com --crawl-mode bfs --max-depth 1 --mailgun-api-id samples.mailgun.org --mailgun-api-key key-3ax6xnjp29jd6fds4gc373sgvjxteol0 --email-sender excited@samples.mailgun.org --email-recepients test@email.com --jenkins-job-name demo-smoketest --jenkins-job-url http://test.debugtalk.com/job/demo-smoketest/ --jenkins-build-number 69
+$ python main.py --seeds http://debugtalk.com --crawl-mode bfs --max-depth 1 --mailgun-api-id samples.mailgun.org --mailgun-api-key key-3ax6xnjp29jd6fds4gc373sgvjxteol0 --mail-sender excited@samples.mailgun.org --mail-recepients test@mail.com --jenkins-job-name demo-smoketest --jenkins-job-url http://test.debugtalk.com/job/demo-smoketest/ --jenkins-build-number 69
 ```

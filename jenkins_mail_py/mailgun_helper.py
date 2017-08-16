@@ -22,9 +22,9 @@ class MailgunHelper(object):
         parser.add_argument(
             '--mailgun-api-key', help="Specify mailgun api key.")
         parser.add_argument(
-            '--email-sender', help="Specify email sender.")
+            '--mail-sender', help="Specify email sender.")
         parser.add_argument(
-            '--email-recepients', nargs='*', help="Specify email recepients.")
+            '--mail-recepients', nargs='*', help="Specify email recepients.")
         parser.add_argument(
             '--mail-subject', help="Specify email subject.")
         parser.add_argument(
@@ -43,15 +43,15 @@ class MailgunHelper(object):
 
         mailgun_api_id = args.mailgun_api_id
         self.mailgun_api_key = args.mailgun_api_key
-        self.email_sender = args.email_sender
-        self.email_recepients = ",".join(args.email_recepients)
+        self.mail_sender = args.mail_sender
+        self.mail_recepients = ",".join(args.mail_recepients)
 
         self.jenkins_job_name = args.jenkins_job_name
         self.jenkins_job_url = args.jenkins_job_url
         self.jenkins_build_number = args.jenkins_build_number
 
         if not (mailgun_api_id and self.mailgun_api_key and \
-                self.email_sender and self.email_recepients):
+                self.mail_sender and self.mail_recepients):
             print("mailgun configuration error, emails can not be sent.")
             self.config_ready = False
         elif not (self.jenkins_job_name and self.jenkins_job_url and self.jenkins_build_number):
@@ -70,8 +70,8 @@ class MailgunHelper(object):
         content_html = self.gen_mail_html_content(content, flag_code)
         data = {
             "subject": subject,
-            "from": "postmaster <{}>".format(self.email_sender),
-            "to": self.email_recepients,
+            "from": "postmaster <{}>".format(self.mail_sender),
+            "to": self.mail_recepients,
             "html": content_html
         }
         resp = requests.post(
