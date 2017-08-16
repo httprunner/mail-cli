@@ -59,7 +59,7 @@ usage: demo_mailgun.py [-h] [--log-level LOG_LEVEL]
                        [--mailgun-api-id MAILGUN_API_ID]
                        [--mailgun-api-key MAILGUN_API_KEY]
                        [--email-sender EMAIL_SENDER]
-                       [--email-recepients EMAIL_RECEPIENTS]
+                       [--email-recepients [EMAIL_RECEPIENTS [EMAIL_RECEPIENTS ...]]]
                        [--mail-subject MAIL_SUBJECT]
                        [--mail-content MAIL_CONTENT]
                        [--jenkins-job-name JENKINS_JOB_NAME]
@@ -78,7 +78,7 @@ optional arguments:
                         Specify mailgun api key.
   --email-sender EMAIL_SENDER
                         Specify email sender.
-  --email-recepients EMAIL_RECEPIENTS
+  --email-recepients [EMAIL_RECEPIENTS [EMAIL_RECEPIENTS ...]]
                         Specify email recepients.
   --mail-subject MAIL_SUBJECT
                         Specify email subject.

@@ -23,7 +23,7 @@ class MailgunHelper(object):
         parser.add_argument(
             '--email-sender', help="Specify email sender.")
         parser.add_argument(
-            '--email-recepients', help="Specify email recepients.")
+            '--email-recepients', nargs='*', help="Specify email recepients.")
         parser.add_argument(
             '--mail-subject', help="Specify email subject.")
         parser.add_argument(
@@ -39,7 +39,7 @@ class MailgunHelper(object):
         mailgun_api_id = args.mailgun_api_id
         self.mailgun_api_key = args.mailgun_api_key
         self.email_sender = args.email_sender
-        self.email_recepients = args.email_recepients
+        self.email_recepients = ",".join(args.email_recepients)
 
         self.jenkins_job_name = args.jenkins_job_name
         self.jenkins_job_url = args.jenkins_job_url
