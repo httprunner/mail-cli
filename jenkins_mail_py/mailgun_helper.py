@@ -1,8 +1,8 @@
 import argparse
 import sys
 import requests
-
 from . import __version__
+
 
 class MailgunHelper(object):
 
@@ -44,7 +44,7 @@ class MailgunHelper(object):
         mailgun_api_id = args.mailgun_api_id
         self.mailgun_api_key = args.mailgun_api_key
         self.mail_sender = args.mail_sender
-        self.mail_recepients = ",".join(args.mail_recepients)
+        self.mail_recepients = args.mail_recepients
 
         self.jenkins_job_name = args.jenkins_job_name
         self.jenkins_job_url = args.jenkins_job_url
@@ -71,7 +71,7 @@ class MailgunHelper(object):
         data = {
             "subject": subject,
             "from": "postmaster <{}>".format(self.mail_sender),
-            "to": self.mail_recepients,
+            "to": ",".join(self.mail_recepients),
             "html": content_html
         }
         resp = requests.post(
