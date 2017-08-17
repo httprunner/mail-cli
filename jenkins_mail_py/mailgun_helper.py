@@ -86,7 +86,7 @@ class MailgunHelper(object):
             print(resp.text)
 
     def gen_mail_html_content(self, content, flag_code):
-        content_bgcolor = "green" if flag_code == 0 else "red"
+        content_bgcolor = "#b3ffe6" if flag_code == 0 else "#FF8A80"
         content_html = """
             <HTML>
                 <body bgcolor="{content_bgcolor}">
