@@ -1,7 +1,7 @@
 import argparse
 import sys
 import requests
-import smtp
+import smtplib
 from email.mime.text import MIMEText
 from . import __version__
 
@@ -10,11 +10,6 @@ class MailgunHelper(object):
 
     def __init__(self, parser=None):
         """
-        config = {
-            'api-id': 'samples.mailgun.org',
-            'api-key': 'key-3ax6xnjp29jd6fds4gc373sgvjxteol0',
-            'sender': 'excited@samples.mailgun.org'
-        }
         """
         parser = parser or argparse.ArgumentParser(
             description='Mailgun helper, send mail with mailgun service.')
