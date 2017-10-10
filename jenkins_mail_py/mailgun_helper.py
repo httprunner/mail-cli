@@ -86,7 +86,7 @@ class MailgunHelper(object):
             server.quit()
 
             print("Email sent")
-        except Exception, e:
+        except Exception as e:
             print("SMTP Failed!!! \nDetail Information below:")
             print(repr(e))
 
