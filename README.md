@@ -56,8 +56,8 @@ And then, you can use mail helper in command shell.
 ```text
 $ python demo_mailgun.py -h
 usage: demo_mailgun.py [-h] [--log-level LOG_LEVEL]
-                       [--mailgun-api-id MAILGUN_API_ID]
-                       [--mailgun-api-key MAILGUN_API_KEY]
+                       [--mailgun-smtp-username MAILGUN_SMTP_USERNAME]
+                       [--mailgun-smtp-password MAILGUN_SMTP_PASSWORD]
                        [--mail-sender MAIL_SENDER]
                        [--mail-recepients [MAIL_RECEPIENTS [MAIL_RECEPIENTS ...]]]
                        [--mail-subject MAIL_SUBJECT]
@@ -72,10 +72,10 @@ optional arguments:
   -h, --help            show this help message and exit
   --log-level LOG_LEVEL
                         Specify logging level, default is INFO.
-  --mailgun-api-id MAILGUN_API_ID
-                        Specify mailgun api id.
-  --mailgun-api-key MAILGUN_API_KEY
-                        Specify mailgun api key.
+  --mailgun-smtp-username MAILGUN_SMTP_USERNAME
+                        Specify mailgun smtp username.
+  --mailgun-smtp-password MAILGUN_SMTP_PASSWORD
+                        Specify mailgun smtp password.
   --mail-sender MAIL_SENDER
                         Specify email sender.
   --mail-recepients [MAIL_RECEPIENTS [MAIL_RECEPIENTS ...]]
@@ -95,5 +95,5 @@ optional arguments:
 ## Example
 
 ```bash
-$ python main.py --seeds http://debugtalk.com --crawl-mode bfs --max-depth 1 --mailgun-api-id samples.mailgun.org --mailgun-api-key key-3ax6xnjp29jd6fds4gc373sgvjxteol0 --mail-sender excited@samples.mailgun.org --mail-recepients test@mail.com --jenkins-job-name demo-smoketest --jenkins-job-url http://test.debugtalk.com/job/demo-smoketest/ --jenkins-build-number 69
+$ python main.py --seeds http://debugtalk.com --crawl-mode bfs --max-depth 1 --mailgun-smtp-username postmaster@YOUR_DOMAIN_NAME --mailgun-smtp-password 3kh9umujora5 --mail-sender foo@YOUR_DOMAIN_NAME --mail-recepients test@mail.com --jenkins-job-name demo-smoketest --jenkins-job-url http://test.debugtalk.com/job/demo-smoketest/ --jenkins-build-number 69
 ```
