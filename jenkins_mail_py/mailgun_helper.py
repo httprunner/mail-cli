@@ -1,6 +1,8 @@
 import argparse
 import sys
 import requests
+import smtp
+from email.mime.text import MIMEText
 from . import __version__
 
 
@@ -18,9 +20,9 @@ class MailgunHelper(object):
             description='Mailgun helper, send mail with mailgun service.')
 
         parser.add_argument(
-            '--mailgun-api-id', help="Specify mailgun api id.")
+            '--mailgun-smtp-username', help="Specify mailgun smtp username.")
         parser.add_argument(
-            '--mailgun-api-key', help="Specify mailgun api key.")
+            '--mailgun-smtp-password', help="Specify mailgun smtp password.")
         parser.add_argument(
             '--mail-sender', help="Specify email sender.")
         parser.add_argument(
@@ -41,8 +43,8 @@ class MailgunHelper(object):
             print("jenkins-mail-py version: {}".format(__version__))
             return
 
-        mailgun_api_id = args.mailgun_api_id
-        self.mailgun_api_key = args.mailgun_api_key
+        mailgun_smtp_username = args.mailgun_smtp_username
+        self.mailgun_smtp_password = args.mailgun_smtp_password
         self.mail_sender = args.mail_sender
         self.mail_recepients = args.mail_recepients
 
@@ -50,7 +52,7 @@ class MailgunHelper(object):
         self.jenkins_job_url = args.jenkins_job_url
         self.jenkins_build_number = args.jenkins_build_number
 
-        if not (mailgun_api_id and self.mailgun_api_key and \
+        if not (mailgun_smtp_username and self.mailgun_smtp_password and \
                 self.mail_sender and self.mail_recepients):
             print("mailgun configuration error, emails can not be sent.")
             self.config_ready = False
@@ -59,31 +61,33 @@ class MailgunHelper(object):
             self.config_ready = False
         else:
             self.config_ready = True
-            self.mailgun_api_url = "https://api.mailgun.net/v3/{}/messages".format(mailgun_api_id)
+            self.mailgun_server_addr = "smtp.mailgun.org"
 
     def send_mail(self, subject, content="", flag_code=0):
         if not self.config_ready:
             print("configuration error, emails can not be sent.")
             sys.exit(1)
-
+            
         subject = "-".join([self.jenkins_job_name, subject])
-        content_html = self.gen_mail_html_content(content, flag_code)
-        data = {
-            "subject": subject,
-            "from": "postmaster <{}>".format(self.mail_sender),
-            "to": ",".join(self.mail_recepients),
-            "html": content_html
-        }
-        resp = requests.post(
-            self.mailgun_api_url,
-            auth=("api", self.mailgun_api_key),
-            data=data
-        )
+        
         try:
-            assert "Queued. Thank you." in resp.json()['message']
-            print(resp.text)
-        except:
-            print(resp.text)
+            server = smtplib.SMTP("smtp.mailgun.org", 587)
+            
+            server.login(mailgun_smtp_username, self.mailgun_smtp_password)
+            
+            msg = MIMEText(self.gen_mail_html_content(content, flag_code), _subtype='html', _charset='utf-8')
+            msg["Subject"] = subject
+            msg["From"] = self.mail_sender
+            msg["To"] = ";".join(self.mail_recepients)
+            
+            server.sendmail(msg["From"], msg["To"], msg.as_string())
+            
+            server.quit()
+            
+            print("Email sent")
+        except Exception, e:
+            print("SMTP Failed!!! \nDetail Information below:")
+            print(repr(e))
 
     def gen_mail_html_content(self, content, flag_code):
         content_bgcolor = "#b3ffe6" if flag_code == 0 else "#FF8A80"
