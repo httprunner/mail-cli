@@ -42,6 +42,8 @@ class MailgunHelper(object):
         self.mailgun_smtp_password = args.mailgun_smtp_password
         self.mail_sender = args.mail_sender
         self.mail_recepients = args.mail_recepients
+        
+        self.mail_recepients_list = self.mail_recepients[0].split(",")
 
         self.jenkins_job_name = args.jenkins_job_name
         self.jenkins_job_url = args.jenkins_job_url
@@ -59,6 +61,10 @@ class MailgunHelper(object):
             self.mailgun_server_addr = "smtp.mailgun.org"
 
     def send_mail(self, subject, content="", flag_code=0):
+        """
+        Using SMTP
+        For more details , please check: https://documentation.mailgun.com/en/latest/quickstart-sending.html#send-via-smtp
+        """
         if not self.config_ready:
             print("configuration error, emails can not be sent.")
             sys.exit(1)
@@ -66,7 +72,7 @@ class MailgunHelper(object):
         subject = "-".join([self.jenkins_job_name, subject])
         
         try:
-            server = smtplib.SMTP("smtp.mailgun.org", 587)
+            server = smtplib.SMTP(self.mailgun_server_addr, 587)
             
             server.login(self.mailgun_smtp_username, self.mailgun_smtp_password)
             
@@ -75,7 +81,7 @@ class MailgunHelper(object):
             msg["From"] = self.mail_sender
             msg["To"] = ";".join(self.mail_recepients)
             
-            server.sendmail(msg["From"], msg["To"], msg.as_string())
+            server.sendmail(msg["From"], self.mail_recepients_list, msg.as_string())
             
             server.quit()
             
