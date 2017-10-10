@@ -38,7 +38,7 @@ class MailgunHelper(object):
             print("jenkins-mail-py version: {}".format(__version__))
             return
 
-        mailgun_smtp_username = args.mailgun_smtp_username
+        self.mailgun_smtp_username = args.mailgun_smtp_username
         self.mailgun_smtp_password = args.mailgun_smtp_password
         self.mail_sender = args.mail_sender
         self.mail_recepients = args.mail_recepients
@@ -47,7 +47,7 @@ class MailgunHelper(object):
         self.jenkins_job_url = args.jenkins_job_url
         self.jenkins_build_number = args.jenkins_build_number
 
-        if not (mailgun_smtp_username and self.mailgun_smtp_password and \
+        if not (self.mailgun_smtp_username and self.mailgun_smtp_password and \
                 self.mail_sender and self.mail_recepients):
             print("mailgun configuration error, emails can not be sent.")
             self.config_ready = False
@@ -68,7 +68,7 @@ class MailgunHelper(object):
         try:
             server = smtplib.SMTP("smtp.mailgun.org", 587)
             
-            server.login(mailgun_smtp_username, self.mailgun_smtp_password)
+            server.login(self.mailgun_smtp_username, self.mailgun_smtp_password)
             
             msg = MIMEText(self.gen_mail_html_content(content, flag_code), _subtype='html', _charset='utf-8')
             msg["Subject"] = subject
