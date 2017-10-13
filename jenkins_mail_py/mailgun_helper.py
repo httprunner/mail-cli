@@ -43,8 +43,6 @@ class MailgunHelper(object):
         self.mail_sender = args.mail_sender
         self.mail_recepients = args.mail_recepients
 
-        self.mail_recepients_list = self.mail_recepients[0].split(",")
-
         self.jenkins_job_name = args.jenkins_job_name
         self.jenkins_job_url = args.jenkins_job_url
         self.jenkins_build_number = args.jenkins_build_number
@@ -81,7 +79,11 @@ class MailgunHelper(object):
             msg["From"] = self.mail_sender
             msg["To"] = ";".join(self.mail_recepients)
 
-            server.sendmail(msg["From"], self.mail_recepients_list, msg.as_string())
+            server.sendmail(
+                msg["From"],
+                ",".join(self.mail_recepients),
+                msg.as_string()
+            )
 
             server.quit()
 
