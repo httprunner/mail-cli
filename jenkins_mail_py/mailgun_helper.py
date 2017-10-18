@@ -41,7 +41,17 @@ class MailgunHelper(object):
         self.mailgun_smtp_username = args.mailgun_smtp_username
         self.mailgun_smtp_password = args.mailgun_smtp_password
         self.mail_sender = args.mail_sender
-        self.mail_recepients = args.mail_recepients
+
+        # given: --mail-recepients 1@mail.com,2@mail.com 3@mail.com, 4@mail.com
+        # converted: ['1@mail.com', '2@mail.com', '3@mail.com', '4@mail.com']
+        mail_recepients = args.mail_recepients or []
+        self.mail_recepients = []
+        for mails_str in mail_recepients:
+            mails_list = mails_str.replace(' ', '').split(',')
+            for mail in mails_list:
+                if not mail:
+                    continue
+                self.mail_recepients.append(mail)
 
         self.jenkins_job_name = args.jenkins_job_name
         self.jenkins_job_url = args.jenkins_job_url
