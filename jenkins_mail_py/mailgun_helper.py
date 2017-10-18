@@ -91,7 +91,7 @@ class MailgunHelper(object):
 
             server.sendmail(
                 msg["From"],
-                ",".join(self.mail_recepients),
+                self.mail_recepients,
                 msg.as_string()
             )
 
