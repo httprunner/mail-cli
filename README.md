@@ -1,20 +1,18 @@
 # Mail CLI
 
-Encapsulation for email senders, include mailgun service and SMTP mailer.
+CLI for email sending, based on mailgun service and SMTP mailer.
 
 ## Install
 
-To install mail helper, run this command in your terminal:
-
 ```bash
-$ pip install -U git+https://github.com/debugtalk/mail-cli.git#egg=mail-cli
+$ pip install -U mailcli
 ```
 
 ## Usage
 
 ```text
-$ python mailcli.py -h
-usage: mailcli.py [-h] [-V] [-u MAILGUN_SMTP_USERNAME]
+$ mailcli -h
+usage: mailcli [-h] [-V] [-u MAILGUN_SMTP_USERNAME]
                   [-p MAILGUN_SMTP_PASSWORD] [--mail-sender MAIL_SENDER]
                   [--mail-recepients [MAIL_RECEPIENTS [MAIL_RECEPIENTS ...]]]
                   [--mail-subject MAIL_SUBJECT] [--mail-content MAIL_CONTENT]
@@ -46,7 +44,7 @@ optional arguments:
 ### send mail with content
 
 ```bash
-$ python mailcli.py \
+$ mailcli \
     -u "user@mail.com" \
     -p "pwd123" \
     --mail-sender "sender@mail.com" \
@@ -58,7 +56,7 @@ $ python mailcli.py \
 ### send mail with file content
 
 ```bash
-$ python mailcli.py \
+$ mailcli \
     -u "user@mail.com" \
     -p "pwd123" \
     --mail-sender "sender@mail.com" \
