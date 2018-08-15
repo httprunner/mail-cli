@@ -5,8 +5,6 @@ import smtplib
 import sys
 from email.mime.text import MIMEText
 
-import requests
-
 MAILGUN_SERVER = "smtp.mailgun.org"
 
 
@@ -28,6 +26,8 @@ def arg_parser():
         '--mail-subject', help="Specify email subject.")
     parser.add_argument(
         '--mail-content', help="Specify email content.")
+    parser.add_argument(
+        '--mail-content-path', help="Load file content as mail content.")
 
     args = parser.parse_args()
     if args.version:
@@ -39,11 +39,22 @@ def arg_parser():
         print("mailgun account configuration incomplete, exit.")
         sys.exit(1)
 
-    if not (args.mail_subject and args.mail_content):
-        print("mail subject or content incomplete, exit.")
+    if not args.mail_subject:
+        print("mail subject missing, exit.")
+        sys.exit(1)
+
+    if not (args.mail_subject or args.mail_content_path):
+        print("mail content missing, exit.")
         sys.exit(1)
 
     return args
+
+
+def __load_file_content(file_path):
+    """ Load file content as mail content.
+    """
+    with open(file_path) as f:
+        return f.read()
 
 
 def send_mail(args):
@@ -54,7 +65,8 @@ def send_mail(args):
         mail_client = smtplib.SMTP(MAILGUN_SERVER, 587)
         mail_client.login(args.mailgun_smtp_username, args.mailgun_smtp_password)
 
-        msg = MIMEText(args.mail_content, _subtype='html', _charset='utf-8')
+        mail_content = args.mail_content or __load_file_content(args.mail_content_path)
+        msg = MIMEText(mail_content, _subtype='html', _charset='utf-8')
         msg["Subject"] = args.mail_subject
         msg["From"] = args.mail_sender
         msg["To"] = ";".join(args.mail_recepients)
@@ -64,9 +76,7 @@ def send_mail(args):
             args.mail_recepients,
             msg.as_string()
         )
-
         mail_client.quit()
-
         print("Email sent")
     except Exception as e:
         print("SMTP Failed!!!")

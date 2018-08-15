@@ -18,6 +18,7 @@ usage: mailcli.py [-h] [-V] [-u MAILGUN_SMTP_USERNAME]
                   [-p MAILGUN_SMTP_PASSWORD] [--mail-sender MAIL_SENDER]
                   [--mail-recepients [MAIL_RECEPIENTS [MAIL_RECEPIENTS ...]]]
                   [--mail-subject MAIL_SUBJECT] [--mail-content MAIL_CONTENT]
+                  [--mail-content-path MAIL_CONTENT_PATH]
 
 Mail-CLI, send mail with mailgun service.
 
@@ -36,9 +37,13 @@ optional arguments:
                         Specify email subject.
   --mail-content MAIL_CONTENT
                         Specify email content.
+  --mail-content-path MAIL_CONTENT_PATH
+                        Load file content as mail content.
 ```
 
 ## Examples
+
+### send mail with content
 
 ```bash
 $ python mailcli.py \
@@ -48,4 +53,16 @@ $ python mailcli.py \
     --mail-recepients test1@mail.com test2@mail.com \
     --mail-subject subject-test \
     --mail-content hello-world
+```
+
+### send mail with file content
+
+```bash
+$ python mailcli.py \
+    -u "user@mail.com" \
+    -p "pwd123" \
+    --mail-sender "sender@mail.com" \
+    --mail-recepients test1@mail.com test2@mail.com \
+    --mail-subject subject-test \
+    --mail-content-path 1534006836.html
 ```
