@@ -1,33 +1,92 @@
+import io
 import os
-import re
+import sys
+from shutil import rmtree
 
-from setuptools import setup
+from setuptools import Command, find_packages, setup
 
-with open(os.path.join(os.path.dirname(__file__), 'mailcli.py')) as f:
-    version = re.compile(r"__version__\s+=\s+'(.*)'", re.I).match(f.read()).group(1)
+about = {}
+here = os.path.abspath(os.path.dirname(__file__))
+with io.open(os.path.join(here, 'mailcli', '__about__.py'), encoding='utf-8') as f:
+    exec(f.read(), about)
 
 with open('README.md') as f:
     long_description = f.read()
 
+
+class UploadCommand(Command):
+    """ Build and publish this package.
+        Support setup.py upload. Copied from requests_html.
+    """
+
+    user_options = []
+
+    @staticmethod
+    def status(s):
+        """Prints things in green color."""
+        print("\033[0;32m{0}\033[0m".format(s))
+
+    def initialize_options(self):
+        """ override
+        """
+        pass
+
+    def finalize_options(self):
+        """ override
+        """
+        pass
+
+    def run(self):
+        try:
+            self.status('Removing previous builds…')
+            rmtree(os.path.join(here, 'dist'))
+        except OSError:
+            pass
+
+        self.status('Building Source and Wheel (universal) distribution…')
+        os.system('{0} setup.py sdist bdist_wheel --universal'.format(sys.executable))
+
+        self.status('Uploading the package to PyPi via Twine…')
+        os.system('twine upload dist/*')
+
+        self.status('Publishing git tags…')
+        os.system('git tag v{0}'.format(about['__version__']))
+        os.system('git push --tags')
+
+        sys.exit()
+
 setup(
-    name='mail-cli',
-    version=version,
-    description="Encapsulation for email senders, include mailgun service and SMTP mailer.",
-    long_description=__doc__,
-    author="Leo Lee",
-    author_email='mail@debugtalk.com',
-    url='https://github.com/debugtalk/mail-cli.git',
-    license="MIT license",
-    keywords='Email STMP Mailgun',
+    name=about['__title__'],
+    version=about['__version__'],
+    description=about['__description__'],
+    long_description=long_description,
+    long_description_content_type='text/markdown',
+    author=about['__author__'],
+    author_email=about['__author_email__'],
+    url=about['__url__'],
+    license=about['__license__'],
+    python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, <4',
+    packages=find_packages(exclude=["tests", "tests.*"]),
+    package_data={
+        '': ["README.md"]
+    },
+    keywords='mail cli jenkins',
+    extras_require={},
     classifiers=[
         "Development Status :: 3 - Alpha",
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: MIT License',
-        'Natural Language :: English',
         'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6'
-    ]
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7'
+    ],
+    entry_points={
+        'console_scripts': [
+            'mailcli=mailcli.mailcli:main'
+        ]
+    },
+    # $ setup.py upload support.
+    cmdclass={
+        'upload': UploadCommand
+    }
 )

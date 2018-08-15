@@ -1,9 +1,8 @@
-__version__ = '0.3.0'
-
 import argparse
 import smtplib
 import sys
 from email.mime.text import MIMEText
+from mailcli.__about__ import __version__
 
 MAILGUN_SERVER = "smtp.mailgun.org"
 
