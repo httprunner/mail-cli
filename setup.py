@@ -3,29 +3,24 @@ import re
 
 from setuptools import setup
 
-with open(os.path.join(os.path.dirname(__file__), 'jenkins_mail_py', '__init__.py')) as f:
+with open(os.path.join(os.path.dirname(__file__), 'mailcli.py')) as f:
     version = re.compile(r"__version__\s+=\s+'(.*)'", re.I).match(f.read()).group(1)
 
 with open('README.md') as f:
     long_description = f.read()
 
 setup(
-    name='jenkins-mail-py',
+    name='mail-cli',
     version=version,
     description="Encapsulation for email senders, include mailgun service and SMTP mailer.",
     long_description=__doc__,
     author="Leo Lee",
     author_email='mail@debugtalk.com',
-    url='https://github.com/debugtalk/jenkins-mail-py.git',
-    packages=[
-        'jenkins_mail_py',
-    ],
-    include_package_data=True,
+    url='https://github.com/debugtalk/mail-cli.git',
     license="MIT license",
-    zip_safe=False,
     keywords='Email STMP Mailgun',
     classifiers=[
-        'Development Status :: 4 - Beta',
+        "Development Status :: 3 - Alpha",
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
